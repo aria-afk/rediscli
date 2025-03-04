@@ -13,6 +13,7 @@ import (
 type Redis struct {
 	Ctx    context.Context
 	Client *goredis.Client
+	Opts   RedisOpts
 }
 
 // NOTE: This is a first pass and assumes we will be building proper URI's
@@ -26,7 +27,7 @@ type RedisOpts struct {
 
 // Return a new instance of a RedisStruct or an error if *any* connection failed.
 func NewRedis(ctx context.Context, opts RedisOpts) (*Redis, error) {
-	r := &Redis{Ctx: ctx}
+	r := &Redis{Ctx: ctx, Opts: opts}
 
 	// Primary conn
 	parsedopts, err := goredis.ParseURL(opts.URI)

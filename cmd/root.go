@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/aria-afk/rediscli/gui"
 	"github.com/aria-afk/rediscli/redis"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -80,9 +81,11 @@ func buildRedisOpts(cmd *cobra.Command) redis.RedisOpts {
 // with the provided args and render the CLI.
 func RunRedis(cmd *cobra.Command, args []string) {
 	redisOpts := buildRedisOpts(cmd)
-	_, err := redis.NewRedis(cmd.Context(), redisOpts)
+	db, err := redis.NewRedis(cmd.Context(), redisOpts)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+	g := gui.NewGUI(db)
+	g.Run()
 }
